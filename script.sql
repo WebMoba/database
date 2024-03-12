@@ -135,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`regions` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 100
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -154,6 +155,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`towns` (
     FOREIGN KEY (`regions_id`)
     REFERENCES `moba`.`regions` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 1102
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -173,6 +175,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `users_email_unique` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 21
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -184,8 +187,12 @@ CREATE TABLE IF NOT EXISTS `moba`.`people` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `id_card` INT NOT NULL,
   `addres` VARCHAR(55) NULL DEFAULT NULL,
+  `identification_type` ENUM('cedula', 'cedula Extranjeria', 'NIT') NOT NULL,
+  `name` VARCHAR(100) NULL DEFAULT NULL,
+  `rol` ENUM('Administrador', 'Cliente', 'Proveedor') NOT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `region_id` VARCHAR(255) NULL DEFAULT NULL,
   `team_works_id` INT NOT NULL,
   `number_phones_id` INT NOT NULL,
   `towns_id` INT NOT NULL,
@@ -409,14 +416,12 @@ CREATE TABLE IF NOT EXISTS `moba`.`detail_sales` (
   PRIMARY KEY (`id`),
   INDEX `fk_detail_sales_sales1_idx` (`sales_id` ASC) VISIBLE,
   INDEX `fk_detail_sales_products1_idx` (`products_id` ASC) VISIBLE,
-  CONSTRAINT `fk_detail_sales_sales1`
-    FOREIGN KEY (`sales_id`)
-    REFERENCES `moba`.`sales` (`id`),
   CONSTRAINT `fk_detail_sales_products1`
     FOREIGN KEY (`products_id`)
-    REFERENCES `moba`.`products` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `moba`.`products` (`id`),
+  CONSTRAINT `fk_detail_sales_sales1`
+    FOREIGN KEY (`sales_id`)
+    REFERENCES `moba`.`sales` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
@@ -506,7 +511,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`migrations` (
   `batch` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 45
+AUTO_INCREMENT = 41
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
