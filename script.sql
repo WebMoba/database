@@ -37,37 +37,86 @@ COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `moba`.`units`
+-- Table `moba`.`detail_purchases`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`units` (
+CREATE TABLE IF NOT EXISTS `moba`.`detail_purchases` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `unit_type` ENUM('unidad', 'docena', 'centena', 'mil') NOT NULL,
-  `size` ENUM('mm', 'cm', 'm') NULL DEFAULT NULL,
-  `area` ENUM('cm2', 'm2') NULL DEFAULT NULL,
+  `quantity` INT NULL DEFAULT NULL,
+  `price_unit` INT NULL DEFAULT NULL,
+  `subtotal` INT NULL DEFAULT NULL,
+  `discount` INT NULL DEFAULT NULL,
+  `total` INT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
+  `materials_raws_id` INT NOT NULL,
+  `purchases_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_detail_purchases_materials_raws1_idx` (`materials_raws_id` ASC) VISIBLE,
+  INDEX `fk_detail_purchases_purchases1_idx` (`purchases_id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
 
 -- -----------------------------------------------------
--- Table `moba`.`materials_raws`
+-- Table `moba`.`detail_quotes`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`materials_raws` (
+CREATE TABLE IF NOT EXISTS `moba`.`detail_quotes` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(55) NULL DEFAULT NULL,
-  `existing_quantity` INT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `units_id` INT NOT NULL,
+  `services_id` INT NOT NULL,
+  `products_id` INT NOT NULL,
+  `projects_id` INT NOT NULL,
+  `quotes_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_materials_raws_units1_idx` (`units_id` ASC) VISIBLE,
-  CONSTRAINT `fk_materials_raws_units1`
-    FOREIGN KEY (`units_id`)
-    REFERENCES `moba`.`units` (`id`))
+  INDEX `fk_detail_quotes_services1_idx` (`services_id` ASC) VISIBLE,
+  INDEX `fk_detail_quotes_products1_idx` (`products_id` ASC) VISIBLE,
+  INDEX `fk_detail_quotes_projects1_idx` (`projects_id` ASC) VISIBLE,
+  INDEX `fk_detail_quotes_quotes1_idx` (`quotes_id` ASC) VISIBLE)
 ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`detail_sales`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`detail_sales` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `quantity` INT NULL DEFAULT NULL,
+  `price_unit` INT NULL DEFAULT NULL,
+  `subtotal` INT NULL DEFAULT NULL,
+  `discount` INT NULL DEFAULT NULL,
+  `total` INT NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `sales_id` INT NOT NULL,
+  `products_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_detail_sales_sales1_idx` (`sales_id` ASC) VISIBLE,
+  INDEX `fk_detail_sales_products1_idx` (`products_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`events`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`events` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `place` VARCHAR(60) NULL DEFAULT NULL,
+  `title` VARCHAR(55) NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `date_start` DATE NULL DEFAULT NULL,
+  `date_end` DATE NULL DEFAULT NULL,
+  `importance_range` ENUM('alta', 'media', 'baja') NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -82,6 +131,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`number_phones` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -100,6 +150,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`projects` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -121,6 +172,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`team_works` (
     FOREIGN KEY (`projects_id`)
     REFERENCES `moba`.`projects` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -175,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `users_email_unique` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 21
+AUTO_INCREMENT = 23
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -216,232 +268,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`people` (
     FOREIGN KEY (`users_id`)
     REFERENCES `moba`.`users` (`id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`purchases`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`purchases` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(55) NULL DEFAULT NULL,
-  `date` DATE NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `people_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_purchases_people1_idx` (`people_id` ASC) VISIBLE,
-  CONSTRAINT `fk_purchases_people1`
-    FOREIGN KEY (`people_id`)
-    REFERENCES `moba`.`people` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`detail_purchases`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`detail_purchases` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `quantity` INT NULL DEFAULT NULL,
-  `price_unit` INT NULL DEFAULT NULL,
-  `subtotal` INT NULL DEFAULT NULL,
-  `discount` INT NULL DEFAULT NULL,
-  `total` INT NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `materials_raws_id` INT NOT NULL,
-  `purchases_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_detail_purchases_materials_raws1_idx` (`materials_raws_id` ASC) VISIBLE,
-  INDEX `fk_detail_purchases_purchases1_idx` (`purchases_id` ASC) VISIBLE,
-  CONSTRAINT `fk_detail_purchases_materials_raws1`
-    FOREIGN KEY (`materials_raws_id`)
-    REFERENCES `moba`.`materials_raws` (`id`),
-  CONSTRAINT `fk_detail_purchases_purchases1`
-    FOREIGN KEY (`purchases_id`)
-    REFERENCES `moba`.`purchases` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`products`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`products` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(55) NULL DEFAULT NULL,
-  `image` BLOB NULL DEFAULT NULL,
-  `quantity` INT NULL DEFAULT NULL,
-  `price` INT NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `units_id` INT NOT NULL,
-  `categories_products_services_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_products_units1_idx` (`units_id` ASC) VISIBLE,
-  INDEX `fk_products_categories_products_services1_idx` (`categories_products_services_id` ASC) VISIBLE,
-  CONSTRAINT `fk_products_categories_products_services1`
-    FOREIGN KEY (`categories_products_services_id`)
-    REFERENCES `moba`.`categories_products_services` (`id`),
-  CONSTRAINT `fk_products_units1`
-    FOREIGN KEY (`units_id`)
-    REFERENCES `moba`.`units` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`quotes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`quotes` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `date_issuance` DATE NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `total` INT NULL DEFAULT NULL,
-  `discount` INT NULL DEFAULT NULL,
-  `status` ENUM('aprobado', 'rechazado', 'pendiente') NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `people_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_quotes_people1_idx` (`people_id` ASC) VISIBLE,
-  CONSTRAINT `fk_quotes_people1`
-    FOREIGN KEY (`people_id`)
-    REFERENCES `moba`.`people` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`services`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`services` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(55) NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `date_start` DATE NULL DEFAULT NULL,
-  `date_end` DATE NULL DEFAULT NULL,
-  `image` BLOB NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `categories_products_services_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_services_categories_products_services1_idx` (`categories_products_services_id` ASC) VISIBLE,
-  CONSTRAINT `fk_services_categories_products_services1`
-    FOREIGN KEY (`categories_products_services_id`)
-    REFERENCES `moba`.`categories_products_services` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`detail_quotes`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`detail_quotes` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `services_id` INT NOT NULL,
-  `products_id` INT NOT NULL,
-  `projects_id` INT NOT NULL,
-  `quotes_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_detail_quotes_services1_idx` (`services_id` ASC) VISIBLE,
-  INDEX `fk_detail_quotes_products1_idx` (`products_id` ASC) VISIBLE,
-  INDEX `fk_detail_quotes_projects1_idx` (`projects_id` ASC) VISIBLE,
-  INDEX `fk_detail_quotes_quotes1_idx` (`quotes_id` ASC) VISIBLE,
-  CONSTRAINT `fk_detail_quotes_products1`
-    FOREIGN KEY (`products_id`)
-    REFERENCES `moba`.`products` (`id`),
-  CONSTRAINT `fk_detail_quotes_projects1`
-    FOREIGN KEY (`projects_id`)
-    REFERENCES `moba`.`projects` (`id`),
-  CONSTRAINT `fk_detail_quotes_quotes1`
-    FOREIGN KEY (`quotes_id`)
-    REFERENCES `moba`.`quotes` (`id`),
-  CONSTRAINT `fk_detail_quotes_services1`
-    FOREIGN KEY (`services_id`)
-    REFERENCES `moba`.`services` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`sales`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`sales` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(55) NULL DEFAULT NULL,
-  `date` DATE NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `people_id` INT NOT NULL,
-  `quotes_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_sales_people1_idx` (`people_id` ASC) VISIBLE,
-  INDEX `fk_sales_quotes1_idx` (`quotes_id` ASC) VISIBLE,
-  CONSTRAINT `fk_sales_people1`
-    FOREIGN KEY (`people_id`)
-    REFERENCES `moba`.`people` (`id`),
-  CONSTRAINT `fk_sales_quotes1`
-    FOREIGN KEY (`quotes_id`)
-    REFERENCES `moba`.`quotes` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`detail_sales`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`detail_sales` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `quantity` INT NULL DEFAULT NULL,
-  `price_unit` INT NULL DEFAULT NULL,
-  `subtotal` INT NULL DEFAULT NULL,
-  `discount` INT NULL DEFAULT NULL,
-  `total` INT NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `sales_id` INT NOT NULL,
-  `products_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_detail_sales_sales1_idx` (`sales_id` ASC) VISIBLE,
-  INDEX `fk_detail_sales_products1_idx` (`products_id` ASC) VISIBLE,
-  CONSTRAINT `fk_detail_sales_products1`
-    FOREIGN KEY (`products_id`)
-    REFERENCES `moba`.`products` (`id`),
-  CONSTRAINT `fk_detail_sales_sales1`
-    FOREIGN KEY (`sales_id`)
-    REFERENCES `moba`.`sales` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_unicode_ci;
-
-
--- -----------------------------------------------------
--- Table `moba`.`events`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `moba`.`events` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `place` VARCHAR(60) NULL DEFAULT NULL,
-  `title` VARCHAR(55) NULL DEFAULT NULL,
-  `description` TEXT NULL DEFAULT NULL,
-  `date_start` DATE NULL DEFAULT NULL,
-  `date_end` DATE NULL DEFAULT NULL,
-  `importance_range` ENUM('alta', 'media', 'baja') NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT NULL,
-  `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -490,13 +317,24 @@ CREATE TABLE IF NOT EXISTS `moba`.`material_raw_product` (
   `materials_raws_id` INT NOT NULL,
   `products_id` INT NOT NULL,
   INDEX `fk_material_raw_product_materials_raws1_idx` (`materials_raws_id` ASC) VISIBLE,
-  INDEX `fk_material_raw_product_products1_idx` (`products_id` ASC) VISIBLE,
-  CONSTRAINT `fk_material_raw_product_materials_raws1`
-    FOREIGN KEY (`materials_raws_id`)
-    REFERENCES `moba`.`materials_raws` (`id`),
-  CONSTRAINT `fk_material_raw_product_products1`
-    FOREIGN KEY (`products_id`)
-    REFERENCES `moba`.`products` (`id`))
+  INDEX `fk_material_raw_product_products1_idx` (`products_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`materials_raws`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`materials_raws` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(55) NULL DEFAULT NULL,
+  `existing_quantity` INT NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `units_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_materials_raws_units1_idx` (`units_id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
@@ -511,7 +349,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`migrations` (
   `batch` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 41
+AUTO_INCREMENT = 51
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -559,6 +397,123 @@ CREATE TABLE IF NOT EXISTS `moba`.`personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `personal_access_tokens_token_unique` (`token` ASC) VISIBLE,
   INDEX `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type` ASC, `tokenable_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`products`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`products` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(55) NULL DEFAULT NULL,
+  `image` BLOB NULL DEFAULT NULL,
+  `quantity` INT NULL DEFAULT NULL,
+  `price` INT NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `units_id` INT NOT NULL,
+  `categories_products_services_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_products_units1_idx` (`units_id` ASC) VISIBLE,
+  INDEX `fk_products_categories_products_services1_idx` (`categories_products_services_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`purchases`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`purchases` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(55) NULL DEFAULT NULL,
+  `date` DATE NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `people_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_purchases_people1_idx` (`people_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`quotes`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`quotes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date_issuance` DATE NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `total` INT NULL DEFAULT NULL,
+  `discount` INT NULL DEFAULT NULL,
+  `status` ENUM('aprobado', 'rechazado', 'pendiente') NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `people_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_quotes_people1_idx` (`people_id` ASC) VISIBLE,
+  CONSTRAINT `fk_quotes_people1`
+    FOREIGN KEY (`people_id`)
+    REFERENCES `moba`.`people` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`sales`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`sales` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(55) NULL DEFAULT NULL,
+  `date` DATE NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `people_id` INT NOT NULL,
+  `quotes_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_sales_people1_idx` (`people_id` ASC) VISIBLE,
+  INDEX `fk_sales_quotes1_idx` (`quotes_id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`services`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`services` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(55) NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
+  `date_start` DATE NULL DEFAULT NULL,
+  `date_end` DATE NULL DEFAULT NULL,
+  `image` BLOB NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  `categories_products_services_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_services_categories_products_services1_idx` (`categories_products_services_id` ASC) VISIBLE,
+  CONSTRAINT `fk_services_categories_products_services1`
+    FOREIGN KEY (`categories_products_services_id`)
+    REFERENCES `moba`.`categories_products_services` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `moba`.`units`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `moba`.`units` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `unit_type` ENUM('unidad', 'docena', 'centena', 'mil', 'mm', 'cm', 'm', 'cm2', 'm2') NULL DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
