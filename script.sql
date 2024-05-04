@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`categories_products_services` (
   `quantity` INT NULL DEFAULT NULL,
   `popular` ENUM('Alta', 'Media', 'Baja') NULL DEFAULT NULL,
   `type` ENUM('servicio', 'producto') NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`materials_raws` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(55) NULL DEFAULT NULL,
   `existing_quantity` INT NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `units_id` INT NOT NULL,
@@ -95,13 +95,12 @@ CREATE TABLE IF NOT EXISTS `moba`.`projects` (
   `description` VARCHAR(65) NULL DEFAULT NULL,
   `date_start` DATE NULL DEFAULT NULL,
   `date_end` DATE NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `status` ENUM('en curso', 'finalizado', 'pausado', 'pendiente') NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -114,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`team_works` (
   `specialty` VARCHAR(65) NULL DEFAULT NULL,
   `assigned_work` TEXT NULL DEFAULT NULL,
   `assigned_date` DATE NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `projects_id` INT NOT NULL,
@@ -124,7 +123,6 @@ CREATE TABLE IF NOT EXISTS `moba`.`team_works` (
     FOREIGN KEY (`projects_id`)
     REFERENCES `moba`.`projects` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -195,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`people` (
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `region_id` VARCHAR(255) NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `team_works_id` INT NOT NULL,
   `number_phones_id` INT NOT NULL,
   `towns_id` INT NOT NULL,
@@ -230,7 +228,8 @@ CREATE TABLE IF NOT EXISTS `moba`.`purchases` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(55) NULL DEFAULT NULL,
   `date` DATE NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
+  `total` INT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `people_id` INT NOT NULL,
@@ -254,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`detail_purchases` (
   `subtotal` INT NULL DEFAULT NULL,
   `discount` INT NULL DEFAULT NULL,
   `total` INT NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `materials_raws_id` INT NOT NULL,
@@ -283,7 +282,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`products` (
   `image` BLOB NULL DEFAULT NULL,
   `quantity` INT NULL DEFAULT NULL,
   `price` INT NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `units_id` INT NOT NULL,
@@ -312,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`quotes` (
   `total` INT NULL DEFAULT NULL,
   `discount` INT NULL DEFAULT NULL,
   `status` ENUM('aprobado', 'rechazado', 'pendiente') NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `people_id` INT NOT NULL,
@@ -336,7 +335,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`services` (
   `date_start` DATE NULL DEFAULT NULL,
   `date_end` DATE NULL DEFAULT NULL,
   `image` BLOB NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `categories_products_services_id` INT NOT NULL,
@@ -355,7 +354,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `moba`.`detail_quotes` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `services_id` INT NOT NULL,
@@ -391,7 +390,8 @@ CREATE TABLE IF NOT EXISTS `moba`.`sales` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(55) NULL DEFAULT NULL,
   `date` DATE NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
+  `total` INT NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `people_id` INT NOT NULL,
@@ -420,7 +420,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`detail_sales` (
   `subtotal` INT NULL DEFAULT NULL,
   `discount` INT NULL DEFAULT NULL,
   `total` INT NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `sales_id` INT NOT NULL,
@@ -449,7 +449,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`events` (
   `description` TEXT NULL DEFAULT NULL,
   `date_start` DATE NULL DEFAULT NULL,
   `date_end` DATE NULL DEFAULT NULL,
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `importance_range` ENUM('alta', 'media', 'baja') NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
@@ -463,7 +463,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `moba`.`event_person`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `moba`.`event_person` (
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `people_id` INT NOT NULL,
   `events_id` INT NOT NULL,
   INDEX `fk_event_person_people1_idx` (`people_id` ASC) VISIBLE,
@@ -501,7 +501,7 @@ COLLATE = utf8mb4_unicode_ci;
 -- Table `moba`.`material_raw_product`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `moba`.`material_raw_product` (
-  `disable` TINYINT(1) NOT NULL DEFAULT '1',
+  `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `materials_raws_id` INT NOT NULL,
   `products_id` INT NOT NULL,
   INDEX `fk_material_raw_product_materials_raws1_idx` (`materials_raws_id` ASC) VISIBLE,
