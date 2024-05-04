@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`people` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `region_id` VARCHAR(255) NULL DEFAULT NULL,
   `disable` TINYINT(1) NOT NULL DEFAULT '0',
-  `team_works_id` INT NOT NULL,
+  `team_works_id` INT NULL DEFAULT NULL,
   `number_phones_id` INT NOT NULL,
   `towns_id` INT NOT NULL,
   `users_id` BIGINT UNSIGNED NOT NULL,
