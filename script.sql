@@ -175,7 +175,6 @@ CREATE TABLE IF NOT EXISTS `moba`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `users_email_unique` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -357,9 +356,9 @@ CREATE TABLE IF NOT EXISTS `moba`.`detail_quotes` (
   `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
-  `services_id` INT NOT NULL,
-  `products_id` INT NOT NULL,
-  `projects_id` INT NOT NULL,
+  `services_id` INT NULL DEFAULT NULL,
+  `products_id` INT NULL DEFAULT NULL,
+  `projects_id` INT NULL DEFAULT NULL,
   `quotes_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_detail_quotes_services1_idx` (`services_id` ASC) VISIBLE,
@@ -395,7 +394,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`sales` (
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   `people_id` INT NOT NULL,
-  `quotes_id` INT NOT NULL,
+  `quotes_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_sales_people1_idx` (`people_id` ASC) VISIBLE,
   INDEX `fk_sales_quotes1_idx` (`quotes_id` ASC) VISIBLE,
