@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`categories_products_services` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -47,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`units` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 10
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -68,6 +70,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`materials_raws` (
     FOREIGN KEY (`units_id`)
     REFERENCES `moba`.`units` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 39
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -82,6 +85,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`number_phones` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -92,9 +96,13 @@ COLLATE = utf8mb4_unicode_ci;
 CREATE TABLE IF NOT EXISTS `moba`.`projects` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NULL DEFAULT NULL,
-  `description` VARCHAR(65) NULL DEFAULT NULL,
+  `description` VARCHAR(600) NULL DEFAULT NULL,
   `date_start` DATE NULL DEFAULT NULL,
   `date_end` DATE NULL DEFAULT NULL,
+  `logo` BLOB NOT NULL,
+  `imageOne` BLOB NULL DEFAULT NULL,
+  `imageTwo` BLOB NULL DEFAULT NULL,
+  `imageThree` BLOB NULL DEFAULT NULL,
   `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `status` ENUM('en curso', 'finalizado', 'pausado', 'pendiente') NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT NULL,
@@ -110,9 +118,12 @@ COLLATE = utf8mb4_unicode_ci;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `moba`.`team_works` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `name` TEXT NULL DEFAULT NULL,
+  `image` BLOB NULL DEFAULT NULL,
   `specialty` VARCHAR(65) NULL DEFAULT NULL,
   `assigned_work` TEXT NULL DEFAULT NULL,
   `assigned_date` DATE NULL DEFAULT NULL,
+  `description` TEXT NULL DEFAULT NULL,
   `disable` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NULL DEFAULT NULL,
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
@@ -137,6 +148,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`regions` (
   `updated_at` TIMESTAMP NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 100
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -156,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`towns` (
     FOREIGN KEY (`regions_id`)
     REFERENCES `moba`.`regions` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 1102
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -175,6 +188,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`users` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `users_email_unique` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -216,6 +230,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`people` (
     FOREIGN KEY (`users_id`)
     REFERENCES `moba`.`users` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -296,6 +311,7 @@ CREATE TABLE IF NOT EXISTS `moba`.`products` (
     FOREIGN KEY (`units_id`)
     REFERENCES `moba`.`units` (`id`))
 ENGINE = InnoDB
+AUTO_INCREMENT = 25
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
